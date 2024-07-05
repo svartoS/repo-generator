@@ -31,7 +31,11 @@ public class GitHubService implements SourceService {
 
     public List<Repository> getRepositories() {
         String url = GITHUB_API_URL + "/user/repos";
-        HttpEntity<Void> entity = createHttpEntity();
+        System.out.println(url);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "token " + GITHUB_ACCESS_TOKEN);
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
         ResponseEntity<Repository[]> response = restTemplate.exchange(url, HttpMethod.GET, entity, Repository[].class);
 
         return Arrays.stream(response.getBody()).map(repo -> {

@@ -5,7 +5,7 @@ spring:
 
 github:
   username: svartoS
-  accessToken: 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
+  accessToken: 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
   api-url: https://api.github.com
 
 bitbucket:
