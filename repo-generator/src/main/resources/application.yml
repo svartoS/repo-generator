@@ -1,20 +1,17 @@
-spring:
-  mvc:
-    pathmatch:
-      matching-strategy: ANT_PATH_MATCHER
+repository:
+  source:
+    provider: github
+  target:
+    provider: bitbucket
 
 github:
   username: svartoS
-  accessToken: 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
+  accessToken: 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
   api-url: https://api.github.com
 
 bitbucket:
-    username: svarto666
-    owner-name: svarto1
-    password: ATBBjBBckCFFnKzX8JzuEYXVynZjD3664B01
-    api-url: https://api.bitbucket.org/2.0
+  username: svarto666
+  owner-name: svarto1
+  password: ATBBFWk96bTL5JzUpRezxpTqESdEA4F4F99D
+  api-url: https://api.bitbucket.org/2.0
 
-
-git:
-  remote:
-    path: C:/idc
