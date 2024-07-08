@@ -22,7 +22,6 @@ import java.util.List;
 public class GitService {
     private String username;
     private String accessToken;
-
     private UsernamePasswordCredentialsProvider credentialsProvider;
 
     public GitService(String gitUsername, String gitAccessToken) {
@@ -30,8 +29,6 @@ public class GitService {
         this.accessToken = gitAccessToken;
         this.credentialsProvider = new UsernamePasswordCredentialsProvider(gitUsername, gitAccessToken);
     }
-
-
     public void cloneRepository(Repository repository) throws GitAPIException {
         try {
             Git git = Git.cloneRepository()

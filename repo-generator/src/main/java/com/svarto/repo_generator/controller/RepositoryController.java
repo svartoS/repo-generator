@@ -38,7 +38,7 @@ public class RepositoryController {
         this.gitServiceFactory = gitServiceFactory;
     }
 
-    @GetMapping("/repositories")
+    @GetMapping("/repos")
     @Operation(summary = "Получение списка всех репозиториев с Github",
             description = "Возвращает список репозиториев",
             responses = {

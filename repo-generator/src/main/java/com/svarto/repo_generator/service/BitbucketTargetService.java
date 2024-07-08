@@ -1,13 +1,12 @@
 package com.svarto.repo_generator.service;
 
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import com.svarto.repo_generator.config.BitbucketProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.transport.URIish;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -22,22 +21,21 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class BitbucketTargetService implements TargetService {
-    private String username;
-    private String password;
-    private String ownerName;
-    private String apiUrl;
-    private RestTemplate restTemplate;
-    private UsernamePasswordCredentialsProvider credentialsProvider;
-
-    public BitbucketTargetService(String bitbucketUsername, String bitbucketPassword, String bitbucketOwnerName, String bitbucketApiUrl) {
-        this.username = bitbucketUsername;
-        this.password = bitbucketPassword;
-        this.ownerName = bitbucketOwnerName;
-        this.apiUrl = bitbucketApiUrl;
+    private final String username;
+    private final String password;
+    private final String ownerName;
+    private final String apiUrl;
+    private final RestTemplate restTemplate;
+    private final UsernamePasswordCredentialsProvider credentialsProvider;
+    @Autowired
+    public BitbucketTargetService(BitbucketProperties bitbucketProperties, UsernamePasswordCredentialsProvider bitbucketCredentialsProvider) {
+        this.username = bitbucketProperties.getUsername();
+        this.password = bitbucketProperties.getPassword();
+        this.ownerName = bitbucketProperties.getOwnerName();
+        this.apiUrl = bitbucketProperties.getApiUrl();
         this.restTemplate = new RestTemplate();
-        this.credentialsProvider = new UsernamePasswordCredentialsProvider(bitbucketUsername, bitbucketPassword);
+        this.credentialsProvider = bitbucketCredentialsProvider;
     }
 
     public void uploadAllRepositories(String localRepositoriesDir) throws URISyntaxException {

@@ -6,7 +6,7 @@ repository:
 
 github:
   username: svartoS
-  accessToken: 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
+  accessToken: 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
   api-url: https://api.github.com
 
 bitbucket:

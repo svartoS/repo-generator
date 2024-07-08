@@ -1,12 +1,12 @@
 package com.svarto.repo_generator.service;
 
+import com.svarto.repo_generator.config.GitHubProperties;
 import com.svarto.repo_generator.model.Branch;
-import com.svarto.repo_generator.model.GitProvider;
 import com.svarto.repo_generator.model.Repository;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -22,21 +22,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-@NoArgsConstructor
 @Service
 public class GitHubSourceService implements SourceService {
-    private String username;
-    private String accessToken;
-    private String apiUrl;
-    private RestTemplate restTemplate;
-    private GitService gitService;
+    private final String username;
+    private final String accessToken;
+    private final String apiUrl;
+    private final RestTemplate restTemplate;
+    private final GitService gitService;
 
-    public GitHubSourceService(String githubUsername, String githubAccessToken, String githubApiUrl) {
-        this.username = githubUsername;
-        this.accessToken = githubAccessToken;
-        this.apiUrl = githubApiUrl;
-        this.restTemplate = new RestTemplate();
-        this.gitService = new GitService(githubUsername, githubAccessToken);
+    @Autowired
+    public GitHubSourceService(GitHubProperties gitHubProperties, RestTemplate restTemplate) {
+        this.username = gitHubProperties.getUsername();
+        this.accessToken = gitHubProperties.getAccessToken();
+        this.apiUrl = gitHubProperties.getApiUrl();
+        this.restTemplate = restTemplate;
+        this.gitService = new GitService(username, accessToken);
     }
 
     public List<Repository> getRepositories() {
