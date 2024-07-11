@@ -4,6 +4,7 @@ import com.svarto.repo_generator.config.BitbucketProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.errors.LockFailedException;
 import org.eclipse.jgit.transport.URIish;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +84,7 @@ public class BitbucketTargetService implements TargetService {
     }
 
     public void uploadRepository(String localRepositoriesDir, String repoName) throws URISyntaxException {
+        log.info("Обработка репозитория: {}", repoName);
         File repositoryDir = new File(localRepositoriesDir, repoName);
 
         if (!repositoryDir.exists() || !new File(repositoryDir, ".git").exists()) {
@@ -110,20 +112,30 @@ public class BitbucketTargetService implements TargetService {
                     .call();
 
             git.close();
+
             log.info("Репозиторий был успешно запушен: {}", repoName);
-        } catch (IOException | GitAPIException e) {
+        }
+        catch (LockFailedException e) {
+            log.error("Не удалось заблокировать файл конфигурации. Убедитесь, что ни один другой процесс не использует репозиторий: {}", repoName, e);
+        }
+        catch (IOException | GitAPIException e) {
             log.error("Ошибка пуша репозитория: {}", repoName, e);
         }
     }
 
     public void createRepository(String repoName) {
-        String url = apiUrl + "/repositories/" + ownerName + "/" + repoName.toLowerCase();
-        HttpHeaders headers = createHeaders(username, password);
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        try {
+            String url = apiUrl + "/repositories/" + ownerName + "/" + repoName.toLowerCase();
+            HttpHeaders headers = createHeaders(username, password);
+            headers.setContentType(MediaType.APPLICATION_JSON);
 
-        String requestBody = "{\"scm\": \"git\", \"is_private\": true, \"fork_policy\": \"no_public_forks\"}";
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-        restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
+            String requestBody = "{\"scm\": \"git\", \"is_private\": true, \"fork_policy\": \"no_public_forks\"}";
+            HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
+            restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
+        } catch (Exception e) {
+            log.error("Ошибка", e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
     private boolean bitbucketRepositoryExists(String repoName) {
@@ -137,7 +149,6 @@ public class BitbucketTargetService implements TargetService {
         } catch (Exception e) {
             return false;
         }
-
     }
 
     private HttpHeaders createHeaders(String username, String password) {

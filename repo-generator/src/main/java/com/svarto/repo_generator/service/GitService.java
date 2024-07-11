@@ -39,6 +39,8 @@ public class GitService {
 
             updateBranch(git);
 
+            git.close();
+
             log.info("Репозиторий " + repository.getCloneUrl() + " был успешно склонирован в "
                              + repository.getLocalPath());
         } catch (Exception e) {
@@ -49,6 +51,7 @@ public class GitService {
 
     public void updateRepository(Repository repository) {
         try {
+
             Git git = Git.open(new File(repository.getLocalPath()));
             PullCommand pullCommand = git.pull()
                     .setCredentialsProvider(credentialsProvider);
@@ -56,6 +59,8 @@ public class GitService {
 
             updateBranch(git);
 
+
+            git.close();
             log.info("Репозиторий " + repository.getLocalPath() + " был успешно обновлен");
         } catch (Exception e) {
             log.error("Ошибка обновления репозитория: {}", e);

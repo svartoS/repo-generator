@@ -1,0 +1,148 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    text-align: center;
+    color: #007bff;
+}
+
+.container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.button-group {
+    margin: 3px 3px;
+    display: flex;
+     flex-shrink: 0;
+    align-items: center;
+}
+.sort{
+    margin-right: 30px;
+    margin: 0px 3px;
+    align-items: center;
+}
+
+.controls input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+.controls button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.controls button:hover {
+    opacity: 0.9;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.table thead th {
+    padding: 12px;
+    text-align: center;
+    background-color: #e9ecef;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table th:first-child, .table td:first-child {
+    width: 7%;
+}
+
+.table th:first-child, .table td:first-child {
+    width: 10%;
+}
+.table th:nth-child(4), .table td:nth-child(4) {
+    width: 15%;
+}
+
+.table th:nth-child(5), .table td:nth-child(5) {
+    width: 15%;
+}
+
+.table tbody tr:nth-child(odd) {
+    background-color: #f2f2f2;
+}
+
+.table tbody tr:hover {
+    background-color: #e2e6ea;
+}
+
+.table td, .table th {
+    text-align: center;
+    padding: 12px;
+    border: 1px solid #dee2e6;
+    vertical-align: middle;
+}
+
+#syncAllStatus, #uploadAllStatus {
+    font-size: 0.9rem;
+    color: #007bff;
+    margin-left: 0px;
+    margin-right: 0px;
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+    .controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .controls input[type="text"] {
+        margin-bottom: 10px;
+    }
+
+    .controls button {
+        width: 100%;
+        margin: 5px 0;
+    }
+}
