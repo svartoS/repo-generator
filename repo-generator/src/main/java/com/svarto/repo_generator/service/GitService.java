@@ -3,13 +3,11 @@ package com.svarto.repo_generator.service;
 import com.svarto.repo_generator.model.Repository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.transport.*;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -44,7 +42,7 @@ public class GitService {
             log.info("Репозиторий " + repository.getCloneUrl() + " был успешно склонирован в "
                              + repository.getLocalPath());
         } catch (Exception e) {
-            log.error("Ошибка клонирования репозитория: {}", e);
+            log.error("Ошибка клонирования репозитория: ", e);
             throw new RuntimeException(e);
         }
     }
@@ -53,17 +51,20 @@ public class GitService {
         try {
 
             Git git = Git.open(new File(repository.getLocalPath()));
+
+            updateBranch(git);
+
             PullCommand pullCommand = git.pull()
                     .setCredentialsProvider(credentialsProvider);
             pullCommand.call();
 
-            updateBranch(git);
+
 
 
             git.close();
             log.info("Репозиторий " + repository.getLocalPath() + " был успешно обновлен");
         } catch (Exception e) {
-            log.error("Ошибка обновления репозитория: {}", e);
+            log.error("Ошибка обновления репозитория: ", e);
             throw new RuntimeException(e);
         }
     }
@@ -82,12 +83,16 @@ public class GitService {
                 String remoteBranchName = remoteBranch.getName();
                 String localBranchName = remoteBranchName.substring(remoteBranchName.lastIndexOf('/') + 1);
 
+
                 boolean branchExists = git.branchList().call().stream()
                         .map(Ref::getName)
                         .anyMatch(name -> name.equals("refs/heads/" + localBranchName));
 
+                //Избавление от ошибки cannotDeleteCheckedOutBranchException
+                git.checkout().setName(localBranchName).call();
+
                 if (!branchExists) {
-                    log.info("Создание локальной ветки: {}", localBranchName);
+                    log.info("Создание локальной ветки: ", localBranchName);
 
                     git.checkout()
                             .setCreateBranch(true)
@@ -99,7 +104,7 @@ public class GitService {
             }
             log.info("Локальные ветки были успешно созданы");
         } catch (GitAPIException e) {
-            log.error("Произошла ошибка во время создания локальный веток: {}", e);
+            log.error("Произошла ошибка во время создания локальный веток: ", e);
         }
     }
 }
