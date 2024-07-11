@@ -22,7 +22,6 @@ import java.util.List;
 public class GitService {
     private String username;
     private String accessToken;
-
     private UsernamePasswordCredentialsProvider credentialsProvider;
 
     public GitService(String gitUsername, String gitAccessToken) {
@@ -30,8 +29,6 @@ public class GitService {
         this.accessToken = gitAccessToken;
         this.credentialsProvider = new UsernamePasswordCredentialsProvider(gitUsername, gitAccessToken);
     }
-
-
     public void cloneRepository(Repository repository) throws GitAPIException {
         try {
             Git git = Git.cloneRepository()
@@ -41,6 +38,8 @@ public class GitService {
                     .setCredentialsProvider(credentialsProvider).call();
 
             updateBranch(git);
+
+            git.close();
 
             log.info("Репозиторий " + repository.getCloneUrl() + " был успешно склонирован в "
                              + repository.getLocalPath());
@@ -52,6 +51,7 @@ public class GitService {
 
     public void updateRepository(Repository repository) {
         try {
+
             Git git = Git.open(new File(repository.getLocalPath()));
             PullCommand pullCommand = git.pull()
                     .setCredentialsProvider(credentialsProvider);
@@ -59,6 +59,8 @@ public class GitService {
 
             updateBranch(git);
 
+
+            git.close();
             log.info("Репозиторий " + repository.getLocalPath() + " был успешно обновлен");
         } catch (Exception e) {
             log.error("Ошибка обновления репозитория: {}", e);

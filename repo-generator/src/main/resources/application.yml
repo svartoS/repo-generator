@@ -6,12 +6,12 @@ repository:
 
 github:
   username: svartoS
-  accessToken: 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
+  accessToken: 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
   api-url: https://api.github.com
 
 bitbucket:
   username: svarto666
   owner-name: svarto1
-  password: ATBBFWk96bTL5JzUpRezxpTqESdEA4F4F99D
+  password: ATBB9yw9tbPY7TqseG4Djum6QeHJ2E5CD299
   api-url: https://api.bitbucket.org/2.0
 
