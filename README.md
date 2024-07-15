@@ -19,8 +19,9 @@ Java Development Kit (JDK) 8 или выше.
 Apache Maven 3.x.
 ## Инструкции по установке
 Клонируйте этот репозиторий: git clone https://github.com/svartoS/repo-generator.git  
-Перейдите в каталог проекта: cd repo-generator
+Перейдите в каталог проекта: cd repo-generator  
 Соберите проект: mvn clean install  
+Перейдите на http://localhost:8080/  
 ## Инструкции по использованию
 Отредактируйте application.yml, указав ваши учетные данные GitHub и Bitbucket (токены API).  
 Запустите приложение: java -jar target/repo-generator.jar  
