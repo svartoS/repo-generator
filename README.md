@@ -23,6 +23,7 @@ Apache Maven 3.x.
 Отредактируйте application.yml, указав ваши учетные данные GitHub и Bitbucket (токены API).  
 Запустите приложение: java -jar target/repo-generator.jar  
 Пример файла application.yml  
+```
 github:  
   username: username  
   accessToken: ghp_accesstoken  
@@ -32,6 +33,7 @@ bitbucket:
   username: username  
   owner-name: usernameOwner  
   password: ATBbitbuckettoken  
-  api-url: https://api.bitbucket.org/2.0  
+  api-url: https://api.bitbucket.org/2.0
+``` 
 ## Если у вас есть вопросы или предложения, не стесняйтесь обращаться!
 tg @svartosan
